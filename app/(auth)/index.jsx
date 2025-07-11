@@ -5,17 +5,22 @@ import {
   Image,
   Platform,
   TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import styles from "../../styles/login.styles";
 import { useState } from "react";
 import {Ionicons} from "@expo/vector-icons";
 import COLORS from "../../constants/colors";
+import { Link } from "expo-router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsloading] = useState(false)
+
+  const handleLogin = () =>{}
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -76,7 +81,34 @@ export default function Login() {
                 onChange={setPassword}
                 secureTextEntry= {!showPassword}
                 />
+                <TouchableOpacity style={styles.eyeIcon} onPress={()=>setShowPassword(!showPassword)}> 
+                  <Ionicons
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
+                  size={20}
+                  color={COLORS.primary}
+                  />
+                </TouchableOpacity>
               </View>
+            </View>
+
+            {/*button*/}
+            <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={isLoading}>
+              {isLoading ? (<ActivityIndicator color="#fff" />) 
+              : (
+                <Text style={styles.buttonText}>Login</Text>
+              )
+
+              }
+            </TouchableOpacity>
+
+            {/*footer*/}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Don't have an account</Text>
+              <Link href="/signup" asChild>
+              <TouchableOpacity>
+                <Text style={styles.link}>Sign Up</Text>
+              </TouchableOpacity>
+              </Link>
             </View>
           </View>
         </View>
