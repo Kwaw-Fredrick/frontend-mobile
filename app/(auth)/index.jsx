@@ -7,20 +7,28 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import styles from "../../styles/login.styles";
 import { useState } from "react";
 import {Ionicons} from "@expo/vector-icons";
 import COLORS from "../../constants/colors";
 import { Link } from "expo-router";
+import { useAuthStore } from "../../store/authStore";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsloading] = useState(false)
+  const {isLoading, login} = useAuthStore();
 
-  const handleLogin = () =>{}
+  const handleLogin = async () =>{
+    const result = await login(email, password);
+    console.log(result);
+    
+    if(!result.success) Alert.alert("Error", result.error)
+      
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -78,7 +86,7 @@ export default function Login() {
                 placeholder="Enter your password"
                 placeholderTextColor={COLORS.placeholderText}
                 value={password}
-                onChange={setPassword}
+                onChangeText={setPassword}
                 secureTextEntry= {!showPassword}
                 />
                 <TouchableOpacity style={styles.eyeIcon} onPress={()=>setShowPassword(!showPassword)}> 
