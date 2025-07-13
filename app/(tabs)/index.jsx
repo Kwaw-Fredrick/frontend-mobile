@@ -47,9 +47,13 @@ export default function Home() {
       setPage(pageNum);
     } catch (error) {
       console.log("Error fetching books", error);
+    }finally{
+      await sleep(800);
+    if (refresh) {setRefreshing(false)
     }
-    if (refresh) setRefreshing(false);
     else setLoading(false);
+
+    }
   };
 
   useEffect(() => {
@@ -120,6 +124,14 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fectchBooks(1, true)}
+            colors={[COLORS.primary]}
+            tintColor={COLORS.primary}
+          />
+        }
         ListHeaderComponent={
           <View style={styles.header}>
             <Text style={styles.headerTitle}>BookWorm 🐛</Text>
